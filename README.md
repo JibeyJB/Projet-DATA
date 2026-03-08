@@ -27,9 +27,8 @@ The course and project supervision were conducted by:
 
 ## 👥 Project Team
 This quantitative research and modeling project was realized by:
-* **[Jean-Baptiste Attié](https://github.com/JibeyJB)** | [LinkedIn](https://www.linkedin.com/in/jean-baptiste-atti%C3%A9-5273a6254/)
+* **[Jean-Baptiste Attié](https://github.com/JibeyJB)** | [LinkedIn](https://www.linkedin.com/in/jean-baptiste-atti%C3%A9-5273a6254/)  
 * **[Yahya Kali](#)** *(Add actual link if available)*
-* **[Vincent Karakoseian](#)** *(Add actual link if available)*
-
+* **[Vincent Karakoseian](#)**  | [LinkedIn](https://www.linkedin.com/in/vincent-ha%C3%AFk-karakoseian-/)  
 ---
 *Note: This repository is intended for academic and research purposes. The models and forecasts provided do not constitute financial advice.*
