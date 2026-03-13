@@ -1,34 +1,80 @@
-# 📈 US Zero-Coupon Yield Curve Prediction
+# Prédiction du taux zéro-coupon US à 1 an par Machine Learning
 
-![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
-![Machine Learning](https://img.shields.io/badge/Machine%20Learning-Scikit--Learn%20%7C%20Statsmodels-orange)
-![Finance](https://img.shields.io/badge/Domain-Quantitative%20Finance-success)
-![Data](https://img.shields.io/badge/Data%20APIs-FRED%20%7C%20YFinance-lightgrey)
+## Description
 
-## 📌 Project Description
-This repository contains a final Machine Learning project aimed at predicting specific points on the US Sovereign Zero-Coupon Yield Curve (targets: ZC_1Y, ZC_5Y, ZC_10Y). The primary objective is to evaluate whether a data-driven Machine Learning approach, leveraging macroeconomic indicators and market variables, can provide a robust and interpretable alternative to traditional parametric interest rate models.
+Projet de Machine Learning & Finance visant à prédire le taux zéro-coupon souverain américain à 1 an (ZC_1Y) à l'aide de méthodes de machine learning, en alternative aux modèles paramétriques traditionnels (Hull-White, Nelson-Siegel).
 
-## 🌍 Project Overview & Financial Context
-The yield curve is a fundamental economic indicator that synthesizes market expectations regarding future economic growth, inflation, and monetary policy. 
+L'approche est purement data-driven : un ensemble de variables macroéconomiques, financières et internationales est utilisé pour entraîner et comparer plusieurs modèles prédictifs.
 
-Traditionally, quantitative finance relies on parametric interest rate models (such as the 1-factor or 2-factor Hull-White models) to reconstruct and simulate the yield curve. However, these models are often computationally expensive to calibrate and highly sensitive to their underlying mathematical assumptions.
+## Contexte financier
 
-**This project adopts a purely data-driven approach:**
-* **Macro-Financial & Market Features:** The models are trained on a comprehensive set of features, including monetary policy (FEDFUNDS, 10Y-2Y Spread), inflation expectations (T5YIE, T10YIE), market volatility (VIX), credit/liquidity stress (BAA10Y, TEDRATE), real economic activity (CPI, GDP), and international benchmarks.
-* **Automated Data Pipeline:** A robust data engineering pipeline was built to fetch live data directly via the **FRED API** and **Yahoo Finance (`yfinance`)**. 
-* **Time Series Alignment:** The dataset spans from 2000 to 2022 (approx. 4,700 daily observations). The pipeline handles complex temporal alignments, converting all series to business days, managing missing values via forward-filling (`ffill`), and properly strictly splitting the dataset chronologically (80% train / 20% test) to prevent data leakage.
-* **Modeling:** The project explores multiple baseline and advanced models, including OLS Linear Regression and time-series specific approaches like ARIMA (p, d, q), evaluating them on their predictive $R^2$ and RMSE.
+La courbe des taux zéro-coupon est un indicateur fondamental qui synthétise les anticipations du marché en matière de croissance, d'inflation et de politique monétaire. Les modèles paramétriques classiques (Hull-White 1/2 facteurs) sont coûteux à calibrer et sensibles aux hypothèses mathématiques. Ce projet explore une approche alternative par machine learning.
 
-## 👨‍🏫 Teaching & Supervision
-This project was carried out as part of the Master 2 Machine Learning & Finance curriculum. 
+## Données
 
-The course and project supervision were conducted by:
-**[Sitraka Matthieu FORLER](https://www.linkedin.com/in/sitraka-matthieu-forler/)**
+* **Sources** : API FRED (Federal Reserve Economic Data) et Yahoo Finance (`yfinance`)
+* **Période** : 2003–2022 (~4 700 observations en jours ouvrés)
+* **Pipeline** : collecte automatisée, alignement temporel en jours ouvrés, forward-fill des valeurs manquantes, test ADF de stationnarité, différenciation des variables non stationnaires, découpage en périodes normale (2017–2020) et stress Covid (2020–2022)
 
-## 👥 Project Team
-This quantitative research and modeling project was realized by:
-* **[Jean-Baptiste Attié](https://github.com/JibeyJB)** | [LinkedIn](https://www.linkedin.com/in/jean-baptiste-atti%C3%A9-5273a6254/)  
-* **[Yahya Kali](#)** *(Add actual link if available)*
-* **[Vincent Karakoseian](#)**  | [LinkedIn](https://www.linkedin.com/in/vincent-ha%C3%AFk-karakoseian-/)  
----
-*Note: This repository is intended for academic and research purposes. The models and forecasts provided do not constitute financial advice.*
+**Variables explicatives :**
+
+| Catégorie | Variables |
+|---|---|
+| Politique monétaire | Fed Funds Rate, Spread 10Y-2Y |
+| Anticipations d'inflation | Breakevens 5Y, 10Y |
+| Risque et stress | VIX, Spread BAA, TED Spread |
+| Activité économique | CPI, GDP |
+| International | Taux UK, Japon, Chine |
+| Marché | S&P 500, Or |
+
+## Modèles et résultats
+
+Trois modèles sont comparés sur des données stationnaires (variables différenciées), évalués sur une période normale (2017–2020) et une période de stress Covid (2020–2022) :
+
+| Modèle | Approche | RMSE Normal | R² Normal | RMSE Stress | R² Stress |
+|---|---|---|---|---|---|
+| OLS (diff) | Régression linéaire sans contrainte | 0.017 | 0.12 | 0.028 | -0.80 |
+| ARIMA | Série temporelle univariée | 0.017 | -0.004 | 0.021 | -0.008 |
+| **LASSO** | **Régression régularisée L1** | **0.015** | **0.26** | **0.019** | **0.17** |
+
+Le Lasso est le seul modèle à conserver un R² positif en période de stress.
+
+**Métriques business (stratégie directionnelle sur le Lasso) :**
+
+| Métrique | Période normale | Période stress |
+|---|---|---|
+| Directional Accuracy | 69% | 61% |
+| PnL cumulé | 5.18 pt | 2.60 pt |
+| Sharpe ratio | 6.81 | 4.02 |
+
+PnL positif sur toutes les périodes. Sharpe à relativiser (sans coûts de transaction).
+
+## Structure du répertoire
+
+```
+Projet-DATA/
+├── Projet_DATA.ipynb          # Notebook principal (pipeline complet)
+├── README.md                  # Ce fichier
+└── Cahier des charges.docx    # Spécifications du projet
+```
+
+## Exécution
+
+Le notebook est conçu pour Google Colab :
+
+1. Ouvrir le notebook dans Colab
+2. Configurer la clé API FRED dans les secrets Colab (`FRED_API_KEY`)
+   * Créer un compte gratuit sur [FRED](https://fred.stlouisfed.org/) pour obtenir une clé API
+3. Exécuter les cellules séquentiellement
+
+## Encadrement
+
+Projet réalisé sous la supervision de **Sitraka Matthieu Forler**.
+
+## Équipe
+
+| Membre | GitHub | LinkedIn |
+|---|---|---|
+| Jean-Baptiste Attié | [@JibeyJB](https://github.com/JibeyJB) | [LinkedIn](https://linkedin.com) |
+| Yahya Kali | | |
+| Vincent Karakoseian | | [LinkedIn](https://linkedin.com) |
