@@ -1,7 +1,9 @@
 # Prédiction du taux zéro-coupon US à 1 an par Machine Learning
 GITHUB
 https://github.com/JibeyJB/Projet-DATA/edit/main/
-COLLAB: https://colab.research.google.com/github/JibeyJB/Projet-DATA/blob/main/scripts.ipynb
+
+COLLAB
+https://colab.research.google.com/github/JibeyJB/Projet-DATA/blob/main/scripts.ipynb
 
 ## Description
 
