@@ -69,8 +69,9 @@ Le notebook est conçu pour Google Colab :
 
 1. Ouvrir le notebook dans Colab
 2. Configurer la clé API FRED dans les secrets Colab (`FRED_API_KEY`)
-   * Créer un compte gratuit sur [FRED](https://fred.stlouisfed.org/) pour obtenir une clé API
-3. Exécuter les cellules séquentiellement
+   * utiliser notre clé API envoyée par email à sitrakaforler@gmail.com
+   * ou créer un compte gratuit sur [FRED](https://fred.stlouisfed.org/) pour obtenir une clé API
+4. Exécuter les cellules séquentiellement
 
 ## Encadrement
 
